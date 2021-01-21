@@ -78,6 +78,8 @@ def operate(type):
             if minutes_result < 0:
                 hours_result += minutes_result // 60
                 minutes_result %= 60
+            if hours_result < 0:
+                raise ValueError
 
         #   Exibindo o resultado na tela
         Label(window, text=f'{hours_result}:{minutes_result}:{seconds_result}',
