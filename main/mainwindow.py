@@ -1,4 +1,5 @@
 from tkinter import *
+from TimeCalculator import Time
 
 #   Criando a janela
 window = Tk()
@@ -42,51 +43,14 @@ Label(window, text='Resultado', pady=10, padx=20, font=('Arial', 13)).grid(row=1
 
 #   Função que irá realizar as operações
 def operate(type):
-    try:
-        #   Capturando os inputs do usuário
-        hours_base_operating = int(hours_base.get())
-        minutes_base_operating = int(minutes_base.get())
-        seconds_base_operating = int(seconds_base.get())
-        hours_operation_operating = int(hours_operation.get())
-        minutes_operation_operating = int(minutes_operation.get())
-        seconds_operation_operating = int(seconds_operation.get())
-
-        #   Para retornar erro quando for digitado algum valor negativo
-        if hours_base_operating < 0 or minutes_base_operating < 0 or seconds_base_operating < 0:
-            raise ValueError
-        if hours_operation_operating < 0 or minutes_operation_operating < 0 or seconds_operation_operating < 0:
-            raise ValueError
-
-        #   Efetuando uma operação de acordo com o tipo de operação escolhido (soma ou subtração)
-        if type == '+':
-            hours_result = hours_base_operating + hours_operation_operating
-            minutes_result = minutes_base_operating + minutes_operation_operating
-            seconds_result = seconds_base_operating + seconds_operation_operating
-            if seconds_result >= 60:
-                minutes_result += seconds_result // 60
-                seconds_result %= 60
-            if minutes_result >= 60:
-                hours_result += minutes_result // 60
-                minutes_result %= 60
-        else:
-            hours_result = hours_base_operating - hours_operation_operating
-            minutes_result = minutes_base_operating - minutes_operation_operating
-            seconds_result = seconds_base_operating - seconds_operation_operating
-            if seconds_result < 0:
-                minutes_result += seconds_result // 60
-                seconds_result %= 60
-            if minutes_result < 0:
-                hours_result += minutes_result // 60
-                minutes_result %= 60
-            if hours_result < 0:
-                raise ValueError
-
-        #   Exibindo o resultado na tela
-        Label(window, text=f'{hours_result}:{minutes_result}:{seconds_result}',
-              font=('Arial', 13), foreground='#006D00').grid(row=1, column=5, rowspan=2)
-    except ValueError:
-        Label(window, text=f'Erro -\nValores digitados inválidos',
-              font=('Arial', 13), foreground='#FF0000').grid(row=1, column=5, rowspan=2)
+    time_operand = Time(hours_base.get(), minutes_base.get(), seconds_base.get())
+    if type == '+':
+        time_operand.add(hours_operation.get(), minutes_operation.get(), seconds_operation.get())
+    elif type == '-':
+        time_operand.sub(hours_operation.get(), minutes_operation.get(), seconds_operation.get())
+    #   Exibindo o resultado na tela
+    Label(window, text=f'{time_operand.get()}',
+          font=('Arial', 13), foreground='#006D00').grid(row=1, column=5, rowspan=2)
 
 
 #   Botões de soma e subtração
